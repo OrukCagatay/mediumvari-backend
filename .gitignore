@@ -1,0 +1,27 @@
+# Virtual Environment
+.venv/
+venv/
+
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+
+# Environment
+.env
+
+# SQLite
+*.db
+
+# Alembic cache
+.alembic/
+
+# VSCode
+.vscode/
+
+
+# OS
+
+Thumbs.db
+
+test_*.py

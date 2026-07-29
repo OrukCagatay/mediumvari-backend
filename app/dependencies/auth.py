@@ -1,0 +1,1 @@
+from app.dependencies.current_user import current_user
