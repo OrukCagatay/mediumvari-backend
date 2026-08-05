@@ -43,8 +43,8 @@ def is_token_blacklisted(
 def delete_expired_blacklisted_tokens(
     db: Session,
 ):
-    stmt = delete(blacklist_token).where(
-        blacklist_token.expires_at <
+    stmt = delete(BlacklistedToken).where(
+        BlacklistedToken.expires_at <
         datetime.now(timezone.utc)
     )
 

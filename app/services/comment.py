@@ -32,13 +32,18 @@ def create_comment_service(
             detail="Post not found"
         )
 
+    if post.status.value == "draft":
+        raise HTTPException(
+            status_code=400,
+            detail="Cannot comment on a draft post"
+        )
+
     return create_comment(
         db,
         comment.content,
         current_user.id,
         post_id
     )
-
 
 
 def get_post_comments_service(
@@ -87,7 +92,6 @@ def update_comment_service(
         comment,
         comment_data.content
     )
-
 
 
 def delete_comment_service(

@@ -1,21 +1,28 @@
-from sqlalchemy.orm import Mapped,relationship
-from sqlalchemy.orm import mapped_column
-from datetime import datetime,timezone
-from sqlalchemy import ForeignKey
-from app.db.database import Base 
+from typing import TYPE_CHECKING
 
+from sqlalchemy.orm import Mapped, relationship
+from sqlalchemy.orm import mapped_column
+from datetime import datetime, timezone
+from sqlalchemy import ForeignKey
+from app.db.database import Base
+
+
+if TYPE_CHECKING:
+    from app.models.user import User
 
 class Comment(Base):
 
-    __tablename__="comments"
+    __tablename__ = "comments"
 
     id: Mapped[int] = mapped_column(primary_key=True)
-    
-    content: Mapped[str]
-    created_at: Mapped[datetime]= mapped_column(default=lambda:datetime.now(timezone.utc)) 
 
-    user_id :Mapped[int]= mapped_column(ForeignKey("users.id"))
-    post_id :Mapped[int]= mapped_column(ForeignKey("posts.id"))
+    content: Mapped[str]
+    created_at: Mapped[datetime] = mapped_column(default=lambda: datetime.now(timezone.utc))
+
+    user_id: Mapped[int] = mapped_column(ForeignKey("users.id"))
+    post_id: Mapped[int] = mapped_column(ForeignKey("posts.id"))
+
+    author: Mapped["User"] = relationship()
 
     
 

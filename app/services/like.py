@@ -1,7 +1,7 @@
 from fastapi import HTTPException
 from sqlalchemy.orm import Session
 
-from app.crud.like import unlike_post,get_post_likes,count_likes
+from app.crud.like import unlike_post, get_post_likes, count_likes
 
 from app.crud.like import (
     like_post,
@@ -22,6 +22,12 @@ def like_post_service(
         raise HTTPException(
             status_code=404,
             detail="Post not found"
+        )
+
+    if post.status.value == "draft":
+        raise HTTPException(
+            status_code=400,
+            detail="Cannot like a draft post"
         )
 
     like = get_like(
@@ -77,18 +83,18 @@ def unlike_post_service(
 
 def get_post_likes_service(
         db: Session,
-        post_id:int
+        post_id: int
 ):
 
-    post = get_post(db,post_id)
+    post = get_post(db, post_id)
 
     if post is None:
         raise HTTPException(
             status_code=404,
             detail="Post not found"
         )
-        
-    return get_post_likes(db,post_id)
+
+    return get_post_likes(db, post_id)
 
 
 def count_likes_service(

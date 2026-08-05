@@ -1,42 +1,70 @@
 TOPICS = [
+    # Technology (narrowed down)
     "Technology",
     "Programming",
     "Artificial Intelligence",
     "Startups",
+
+    # Work & Career
     "Business",
     "Entrepreneurship",
-    "Productivity",
     "Career",
-    "Education",
-    "Science",
-    "Data Science",
-    "Cybersecurity",
-    "Web Development",
-    "Mobile Development",
-    "Cloud Computing",
-    "Design",
-    "UI/UX",
-    "Marketing",
-    "Finance",
+    "Productivity",
+    "Money & Finance",
     "Investing",
-    "Cryptocurrency",
-    "Economics",
-    "Psychology",
+
+    # Personal growth & life
     "Self Improvement",
+    "Mental Health",
+    "Relationships",
+    "Parenting",
+    "Personal Stories",
+    "Life Lessons",
+    "Motivation",
+
+    # Health & lifestyle
     "Health",
     "Fitness",
     "Nutrition",
     "Lifestyle",
-    "Travel",
-    "Food",
-    "Books",
-    "Movies",
-    "Music",
-    "Gaming",
-    "Sports",
+    "Mindfulness",
+
+    # Society & culture
+    "Culture",
+    "Society",
+    "Politics",
     "History",
     "Philosophy",
-    "Politics",
+    "Religion & Spirituality",
     "Environment",
-    "Culture"
+    "News & Current Events",
+
+    # Entertainment & art
+    "Movies",
+    "Music",
+    "Books",
+    "Art",
+    "Photography",
+    "Gaming",
+    "Comedy & Humor",
+    "Television",
+
+    # Lifestyle & interests
+    "Travel",
+    "Food",
+    "Fashion",
+    "Sports",
+    "Pets & Animals",
+    "Home & Garden",
+    "DIY & Crafts",
+
+    # Science & education
+    "Science",
+    "Education",
+    "Psychology",
+    "Space & Astronomy",
+
+    # Other
+    "Opinion",
+    "Poetry & Writing",
 ]

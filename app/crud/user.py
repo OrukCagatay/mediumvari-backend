@@ -30,12 +30,13 @@ def create_user(db: Session, user: UserCreate):
     return db_user
 
 
-def get_users(db: Session):
+def get_users(db: Session, search: str | None = None):
     stmt = select(User)
 
-    users = db.scalars(stmt).all()
+    if search:
+        stmt = stmt.where(User.username.ilike(f"%{search}%"))
 
-    return users
+    return db.scalars(stmt).all()
 
 
 def get_user(db: Session, user_id: int):
@@ -63,6 +64,7 @@ def update_user(
 ):
     user.username = user_data.username
     user.email = user_data.email
+    user.bio = user_data.bio
 
     db.commit()
     db.refresh(user)

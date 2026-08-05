@@ -1,12 +1,14 @@
 from fastapi import APIRouter, Depends
 from sqlalchemy.orm import Session
-from fastapi import status
-
+from fastapi import status,Query
 
 from app.db.database import get_db
-from app.schemas.user import UserResponse,UserUpdate
+from app.schemas.user import UserResponse,UserUpdate,PublicUserProfile
 from app.models.user import User
 
+from app.schemas.post import PostResponse
+from app.schemas.comment import CommentResponse
+from app.services.user import get_my_liked_posts_service, get_my_comments_service
 
 from app.services.user import get_users_service,delete_user_service
 from app.services.user import update_user_service
@@ -39,9 +41,10 @@ Router--JSON Response kullanıcıya gönderilir."""
 
 @router.get("/", response_model=list[UserResponse])
 def read_users(
+    search: str | None = Query(None, description="Search users by username"),
     db: Session = Depends(get_db)
 ):
-    return get_users_service(db)        # userları dönüyo liste liste crudddaki get user fonksiyonundan
+    return get_users_service(db, search)    # userları dönüyo liste liste crudddaki get user fonksiyonundan
 
 
 @router.get("/me",response_model=UserResponse)
@@ -52,7 +55,7 @@ def get_me(
 
 
 
-@router.get("/{user_id}", response_model=UserResponse)
+@router.get("/{user_id}", response_model=PublicUserProfile)
 def read_user(
     user_id: int,
     db: Session = Depends(get_db)
@@ -92,6 +95,24 @@ def update_me_endpoint(
 
 
 
+@router.get("/me/likes", response_model=list[PostResponse])
+def get_my_likes(
+    db: Session = Depends(get_db),
+    current_user: User = Depends(current_user)
+):
+    
+    return get_my_liked_posts_service(db, current_user)
+
+
+
+
+@router.get("/me/comments", response_model=list[CommentResponse])
+def get_my_comments(
+    db: Session = Depends(get_db),
+    current_user: User = Depends(current_user)
+):
+    
+    return get_my_comments_service(db, current_user)
 
 
 

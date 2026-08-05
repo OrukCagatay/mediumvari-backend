@@ -6,6 +6,11 @@ from app.models.post import Post
 from app.models.comment import Comment
 from app.models.like import Like
 
+from sqlalchemy.orm import Session
+
+from app.crud.post import get_post
+from app.crud.comment import get_comment
+
 
 def get_all_users(
     db: Session,
@@ -49,6 +54,19 @@ def delete_user(
 ):
     db.delete(user)
     db.commit()
+
+
+
+def admin_delete_post(db: Session, post: Post):
+    db.delete(post)
+    db.commit()
+
+
+
+def admin_delete_comment(db: Session, comment: Comment):
+    db.delete(comment)
+    db.commit()
+
 
 
 def get_dashboard_stats(

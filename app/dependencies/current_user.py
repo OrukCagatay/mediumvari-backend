@@ -104,7 +104,6 @@ class CurrentUser:
 
     
 
-
     def get_user(
         self,
         payload: dict,
@@ -169,3 +168,37 @@ class CurrentUser:
 
 
 current_user = CurrentUser()
+
+
+### bu kendi draftını sadece ve sadece userin kendisi görebilsin diye var 
+
+class OptionalCurrentUser(CurrentUser):
+
+    def __call__(
+        self,
+        request: Request,
+        credentials: HTTPAuthorizationCredentials | None = Depends(security),
+        db: Session = Depends(get_db)
+    ) -> User | None:
+
+        if credentials is not None:
+            authorization = f"{credentials.scheme} {credentials.credentials}"
+        else:
+            authorization = request.headers.get("Authorization")
+
+
+        if authorization is None:
+            return None
+
+        try:
+            token = self.extract_token(authorization)
+            payload = self.decode_token(token)
+            self.check_blacklist(payload, db)
+            user = self.get_user(payload, db)
+            
+            return user
+        except HTTPException as e:
+            return None
+
+
+optional_current_user = OptionalCurrentUser()

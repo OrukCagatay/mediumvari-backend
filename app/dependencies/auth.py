@@ -1,1 +1,1 @@
-from app.dependencies.current_user import current_user
+from app.dependencies.current_user import current_user, optional_current_user

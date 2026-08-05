@@ -12,7 +12,6 @@ from app.crud.saved_post import (
 )
 
 
-
 def save_post_service(
     db: Session,
     current_user: User,
@@ -24,6 +23,12 @@ def save_post_service(
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
             detail="Post not found."
+        )
+
+    if post.status.value == "draft":
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="Cannot save a draft post."
         )
 
     saved_post = get_saved_post(
@@ -47,7 +52,6 @@ def save_post_service(
     return {
         "message": "Post saved successfully."
     }
-
 
 
 def unsave_post_service(

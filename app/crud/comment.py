@@ -1,5 +1,5 @@
 from sqlalchemy import select
-from sqlalchemy.orm import Session
+from sqlalchemy.orm import Session, selectinload
 
 from app.models.comment import Comment
 
@@ -23,7 +23,6 @@ def create_comment(
     return db_comment
 
 
-
 def get_comment(
     db: Session,
     comment_id: int
@@ -35,19 +34,32 @@ def get_comment(
     return db.scalar(stmt)
 
 
-
-def get_post_comments(          # şuan ilk yorumdan sona doğru dönüyo ama daha sorna like a etkileşime göre düzenlerim
+def get_post_comments(
     db: Session,
     post_id: int
 ):
     stmt = (
         select(Comment)
+        .options(selectinload(Comment.author))
         .where(Comment.post_id == post_id)
         .order_by(Comment.created_at.asc())
     )
 
     return db.scalars(stmt).all()
 
+
+def get_comments_by_user(
+    db: Session,
+    user_id: int
+):
+    """Bir kullanıcının tüm yorumlarını döner (sadece kendisi görebilir)."""
+    stmt = (
+        select(Comment)
+        .where(Comment.user_id == user_id)
+        .order_by(Comment.created_at.desc())
+    )
+
+    return db.scalars(stmt).all()
 
 
 def update_comment(
@@ -61,7 +73,6 @@ def update_comment(
     db.refresh(comment)
 
     return comment
-
 
 
 def delete_comment(

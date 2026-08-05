@@ -8,7 +8,6 @@ A Medium-inspired backend built with FastAPI.
 - SQLAlchemy
 - Alembic
 - JWT Authentication
-- Gemini AI
 - SQLite
 
 ## Features

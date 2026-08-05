@@ -9,3 +9,4 @@ from app.models.post_tag import PostTag
 from app.models.topic import Topic
 from app.models.ai_usage import AIUsage
 from app.models.blacklisted_token import BlacklistedToken
+from app.models.post_translation import PostTranslation

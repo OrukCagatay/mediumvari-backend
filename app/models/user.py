@@ -1,7 +1,7 @@
-from sqlalchemy.orm import Mapped,relationship
+from sqlalchemy.orm import Mapped, relationship
 from sqlalchemy.orm import mapped_column
-from datetime import datetime,timezone
-from app.db.database import Base 
+from datetime import datetime, timezone
+from app.db.database import Base
 import sqlalchemy as sa
 from enum import Enum
 
@@ -11,12 +11,10 @@ from typing import TYPE_CHECKING
 if TYPE_CHECKING:
     from app.models.post import Post
 
-    
 
 class UserRole(str, Enum):
     user = "user"
     admin = "admin"
-
 
 
 class User(Base):
@@ -34,6 +32,8 @@ class User(Base):
         index=True
     )
 
+    bio: Mapped[str | None] = mapped_column(nullable=True)
+
     role: Mapped[UserRole] = mapped_column(
         sa.Enum(UserRole),
         default=UserRole.user,
@@ -50,5 +50,3 @@ class User(Base):
         back_populates="author",
         cascade="all, delete-orphan"
     )
-
-

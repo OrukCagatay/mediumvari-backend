@@ -19,9 +19,10 @@ __pycache__/
 # VSCode
 .vscode/
 
-
 # OS
-
 Thumbs.db
 
+# Test files
 test_*.py
+test_*.mp3
+*.mp3

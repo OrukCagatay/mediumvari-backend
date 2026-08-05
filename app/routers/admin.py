@@ -19,6 +19,8 @@ from app.services.admin import (
     update_user_role_service,
     delete_user_service,
     get_dashboard_service,
+    admin_delete_post_service,
+    admin_delete_comment_service,
 )
 
 router = APIRouter(
@@ -138,3 +140,43 @@ def delete_user(
         db,
         user_id,
     )
+
+
+@router.delete(
+    "/posts/{post_id}",
+    summary="Delete any post",
+    description="""
+Deletes a post regardless of ownership.
+
+Admin only.
+""",
+    responses={
+        404: {"description": "Post not found"}
+    }
+)
+def delete_post_as_admin(
+    post_id: int,
+    db: Session = Depends(get_db),
+    current_user: User = Depends(admin_authenticator),
+):
+    return admin_delete_post_service(db, post_id)
+
+
+@router.delete(
+    "/comments/{comment_id}",
+    summary="Delete any comment",
+    description="""
+Deletes a comment regardless of ownership.
+
+Admin only.
+""",
+    responses={
+        404: {"description": "Comment not found"}
+    }
+)
+def delete_comment_as_admin(
+    comment_id: int,
+    db: Session = Depends(get_db),
+    current_user: User = Depends(admin_authenticator),
+):
+    return admin_delete_comment_service(db, comment_id)

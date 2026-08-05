@@ -9,6 +9,10 @@ from app.crud.admin import (
     get_dashboard_stats,
 )
 
+from app.crud.post import get_post
+from app.crud.comment import get_comment
+from app.crud.admin import admin_delete_post, admin_delete_comment
+
 from app.models.user import UserRole
 
 from app.schemas.admin import DashboardResponse
@@ -59,6 +63,35 @@ def update_user_role_service(
         user,
         role,
     )
+
+
+def admin_delete_post_service(db: Session, post_id: int):
+    post = get_post(db, post_id)
+
+    if post is None:
+        raise HTTPException(
+            status_code=404,
+            detail="Post not found",
+        )
+
+    admin_delete_post(db, post)
+
+    return {"message": "Post deleted successfully"}
+
+
+
+def admin_delete_comment_service(db: Session, comment_id: int):
+    comment = get_comment(db, comment_id)
+
+    if comment is None:
+        raise HTTPException(
+            status_code=404,
+            detail="Comment not found",
+        )
+
+    admin_delete_comment(db, comment)
+
+    return {"message": "Comment deleted successfully"}
 
 
 def delete_user_service(
