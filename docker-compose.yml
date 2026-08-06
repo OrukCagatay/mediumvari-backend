@@ -1,0 +1,25 @@
+services:
+  redis:
+    image: redis:alpine
+    ports:
+      - "6379:6379"
+
+  backend:
+    build: .
+    ports:
+      - "8000:8000"
+    env_file:
+      - .env
+    environment:
+      - REDIS_HOST=redis
+    volumes:
+      - ./database.db:/app/database.db
+    depends_on:
+      - redis
+
+  frontend:
+    build: ../mediumvari-frontend
+    ports:
+      - "3000:80"
+    depends_on:
+      - backend
