@@ -1,3 +1,5 @@
+from contextlib import asynccontextmanager
+
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware 
 
@@ -16,10 +18,19 @@ from app.routers.admin import router as admin_router
 from app.routers.health import router as health_router
 from app.routers.image import router as image_router
 from app.routers.post_translation import router as post_translation_router
+from app.routers.trending import router as trending_router
+
+from app.services.scheduler import start_scheduler
 
 
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    scheduler = start_scheduler()
+    yield
+    scheduler.shutdown()
 
-app = FastAPI()
+
+app = FastAPI(lifespan=lifespan)
 
 app.add_middleware(
     CORSMiddleware,
@@ -33,6 +44,7 @@ app.add_middleware(
 app.include_router(auth_router)
 app.include_router(admin_router)
 app.include_router(user_router)
+app.include_router(trending_router)
 app.include_router(post_router)
 app.include_router(like_router)
 app.include_router(comment_router)

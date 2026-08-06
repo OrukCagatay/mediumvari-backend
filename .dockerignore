@@ -1,0 +1,10 @@
+.venv/
+__pycache__/
+*.pyc
+.env
+.git/
+.gitignore
+database.db
+*.db
+alembic/versions/__pycache__/
+.pytest_cache/

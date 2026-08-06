@@ -1,4 +1,4 @@
-from sqlalchemy import create_engine
+from sqlalchemy import create_engine, event
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.orm import DeclarativeBase
 
@@ -11,6 +11,17 @@ DATABASE_URL = "sqlite:///database.db"
 
 engine = create_engine(DATABASE_URL)
                             # engine ile db bağlantısı  oluşturulur
+
+
+@event.listens_for(engine, "connect")
+def set_sqlite_pragma(dbapi_connection, connection_record):
+    # SQLite'ta foreign key kısıtlamaları (ondelete="CASCADE" gibi) VARSAYILAN OLARAK KAPALI.
+    # Her yeni bağlantıda bunu açıyoruz, yoksa CASCADE kuralları veritabanında tanımlı olsa bile çalışmaz.
+    cursor = dbapi_connection.cursor()
+    cursor.execute("PRAGMA foreign_keys=ON")
+    cursor.close()
+
+
 SessionLocal = sessionmaker(bind=engine,autoflush=False,autocommit=False)   # şu 2si transactionda sıkıntı çıkmasın diye var
                                             # session db üzerine işlem demek her endpointe requesste işlem yapılabilir 
                                             # o yüzden merkezleştiriyoruz

@@ -161,3 +161,23 @@ def delete_post(
 ):
     db.delete(post)
     db.commit()
+
+
+
+def get_posts_by_ids_ordered(db: Session, post_ids: list[int]):
+    """Verilen ID sırasını koruyarak postları getirir."""
+    if not post_ids:
+        return []
+
+    stmt = (
+        select(Post)
+        .options(
+            selectinload(Post.author),
+            selectinload(Post.topic),
+        )
+        .where(Post.id.in_(post_ids))
+    )
+    posts = db.scalars(stmt).all()
+
+    posts_by_id = {p.id: p for p in posts}
+    return [posts_by_id[pid] for pid in post_ids if pid in posts_by_id]
